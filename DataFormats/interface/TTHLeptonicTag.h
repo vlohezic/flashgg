@@ -5,6 +5,7 @@
 #include "flashgg/DataFormats/interface/Muon.h"
 #include "flashgg/DataFormats/interface/Electron.h"
 #include "flashgg/DataFormats/interface/Jet.h"
+#include "flashgg/DataFormats/interface/Met.h"
 
 namespace flashgg {
 
@@ -23,13 +24,21 @@ namespace flashgg {
         const std::vector<edm::Ptr<flashgg::Electron> > electrons() const {return Electrons_;}
         const std::vector<edm::Ptr<Jet> > jets() const { return Jets_;}
         const std::vector<edm::Ptr<Jet> > bJets() const { return BJets_;}
+        const edm::Ptr<flashgg::Met>  met() const { return Met_;}
 
         const std::vector<double>  leptonsPt() const { return lepPt_;}
         const std::vector<double>  leptonsE() const { return lepE_;}
         const std::vector<double>  leptonsPhi() const { return lepPhi_;}
         const std::vector<double>  leptonsEta() const { return lepEta_;}
+        const std::vector<double>  leptonsCharge() const { return lepCharge_;}
         const std::vector<int>  leptonsType() const { return lepType_;}
 
+        float maxBTagVal() const { return maxBTagVal_; }
+        float secondMaxBTagVal() const { return secondMaxBTagVal_; }
+        float thirdMaxBTagVal() const { return thirdMaxBTagVal_; }
+        float fourthMaxBTagVal() const { return fourthMaxBTagVal_; }
+        float maxBTagVal_noBB() const { return maxBTagVal_noBB_; }
+        float secondMaxBTagVal_noBB() const { return secondMaxBTagVal_noBB_; }
         int leadPrompt() const { return leadPrompt_; }
         int subleadPrompt() const { return subleadPrompt_; }        
         int leadMad() const { return leadMad_; }
@@ -57,8 +66,16 @@ namespace flashgg {
         void setLepE( std::vector<double> lepE ) { lepE_ = lepE; }
         void setLepEta( std::vector<double> lepEta ) { lepEta_ = lepEta; }
         void setLepPhi( std::vector<double> lepPhi ) { lepPhi_ = lepPhi; }
+        void setLepCharge( std::vector<double> lepCharge ) { lepCharge_ = lepCharge; }
         void setLepType( std::vector<int> lepType ) { lepType_ = lepType; }
+        void setMet( edm::Ptr<flashgg::Met> Met ) {Met_ = Met;}
 
+        void setMaxBTagVal(float maxBTagVal) { maxBTagVal_ = maxBTagVal; }
+        void setSecondMaxBTagVal(float secondMaxBTagVal) { secondMaxBTagVal_ = secondMaxBTagVal; }
+        void setThirdMaxBTagVal(float thirdMaxBTagVal) { thirdMaxBTagVal_ = thirdMaxBTagVal; }
+        void setFourthMaxBTagVal(float fourthMaxBTagVal) { fourthMaxBTagVal_ = fourthMaxBTagVal; }
+        void setMaxBTagVal_noBB(float maxBTagVal_noBB) { maxBTagVal_noBB_ = maxBTagVal_noBB; }
+        void setSecondMaxBTagVal_noBB(float secondMaxBTagVal_noBB) { secondMaxBTagVal_noBB_ = secondMaxBTagVal_noBB; }
         void setLeadPrompt(int leadPrompt) { leadPrompt_ = leadPrompt; }
         void setSubleadPrompt(int subleadPrompt) { subleadPrompt_ = subleadPrompt; }
         void setLeadMad(int leadMad) { leadMad_ = leadMad; }
@@ -88,13 +105,21 @@ namespace flashgg {
         std::vector<edm::Ptr<Electron> > Electrons_;
         std::vector<edm::Ptr<Jet> > Jets_;
         std::vector<edm::Ptr<Jet> > BJets_;
+        edm::Ptr<flashgg::Met> Met_;
 
         std::vector<double> lepPt_;
         std::vector<double> lepE_;
         std::vector<double> lepEta_;
         std::vector<double> lepPhi_;
+        std::vector<double> lepCharge_;
         std::vector<int>    lepType_;
 
+        float maxBTagVal_;
+        float secondMaxBTagVal_;
+        float thirdMaxBTagVal_;
+        float fourthMaxBTagVal_;
+        float maxBTagVal_noBB_;
+        float secondMaxBTagVal_noBB_;
         int leadPrompt_;
         int subleadPrompt_;
         int leadMad_;

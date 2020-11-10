@@ -166,6 +166,10 @@ namespace flashgg {
         float subleadPSV_;
         float nJets_;
         float nJets_bTagMedium_;
+        float maxBTagVal_;
+        float secondMaxBTagVal_;
+        float thirdMaxBTagVal_;
+        float fourthMaxBTagVal_;
         float jet_pt1_;
         float jet_pt2_;
         float jet_pt3_;
@@ -841,6 +845,11 @@ namespace flashgg {
      
                 if( idmva1 < PhoMVAThreshold_ || idmva2 < PhoMVAThreshold_ ) { continue; }
 
+                maxBTagVal_ = -3.;
+                secondMaxBTagVal_ = -3.;
+                thirdMaxBTagVal_ = -3.;
+                fourthMaxBTagVal_ = -3.;
+                
                 ht_ = 0.;
                 btag_1_=-999;
                 btag_noBB_1_ = -999;
@@ -889,6 +898,7 @@ namespace flashgg {
                 std::vector<double> lepEta;
                 std::vector<double> lepPhi;
                 std::vector<double> lepE;
+                std::vector<double> lepCharge;
                 std::vector<int>    lepType;
 
                 if(theMuons->size()>0) {
@@ -1026,12 +1036,14 @@ namespace flashgg {
                         lepEta.push_back(Muons[n]->eta());
                         lepPhi.push_back(Muons[n]->phi());
                         lepE.push_back(Muons[n]->energy());
+                        lepCharge.push_back(Muons[n]->charge());
                         
                     }else if(type==2){
                         if(debug_) cout<<"ELEC LEPPTCHECK "<<   sorter[i].second<<" "<<Electrons[n]->pt()<< endl;
                         lepEta.push_back(Electrons[n]->eta());
                         lepPhi.push_back(Electrons[n]->phi());
                         lepE.push_back(Electrons[n]->energy());
+                        lepCharge.push_back(Electrons[n]->charge());
                     }                
                 }
                 
@@ -1110,6 +1122,29 @@ namespace flashgg {
 
                         bDiscriminatorValue >= 0. ? bTags.push_back(bDiscriminatorValue) : bTags.push_back(-1.);
                         bDiscriminatorValue_noBB >= 0. ? bTags_noBB.push_back(bDiscriminatorValue_noBB) : bTags_noBB.push_back(-1.);
+
+                        if(bDiscriminatorValue > maxBTagVal_){ 
+                            
+                            if(thirdMaxBTagVal_>fourthMaxBTagVal_) { fourthMaxBTagVal_= thirdMaxBTagVal_;}
+                            if(secondMaxBTagVal_>thirdMaxBTagVal_){ thirdMaxBTagVal_= secondMaxBTagVal_; }
+                            if(maxBTagVal_ > secondMaxBTagVal_) { secondMaxBTagVal_ = maxBTagVal_; }
+                            
+                            maxBTagVal_ = bDiscriminatorValue;
+                            
+                        } else if(bDiscriminatorValue > secondMaxBTagVal_){
+                            
+                            if(thirdMaxBTagVal_>fourthMaxBTagVal_) { fourthMaxBTagVal_= thirdMaxBTagVal_;}
+                            if(secondMaxBTagVal_>thirdMaxBTagVal_) { thirdMaxBTagVal_= secondMaxBTagVal_;}
+                            secondMaxBTagVal_ = bDiscriminatorValue;
+                            
+                        } else if(bDiscriminatorValue > thirdMaxBTagVal_){
+                            
+                            if(thirdMaxBTagVal_>fourthMaxBTagVal_) { fourthMaxBTagVal_= thirdMaxBTagVal_;}
+                            thirdMaxBTagVal_ = bDiscriminatorValue;
+                            
+                        } else if(bDiscriminatorValue > fourthMaxBTagVal_){
+                            fourthMaxBTagVal_ = bDiscriminatorValue;
+                        }
 
                         if( bDiscriminatorValue > bDiscriminator_[0] ) njets_btagloose_++;
                         if( bDiscriminatorValue > bDiscriminator_[1] ) njets_btagmedium_++;
@@ -1255,8 +1290,10 @@ namespace flashgg {
                     bTag2_ = bTags[1];
                 }
 
+                edm::Ptr<flashgg::Met> Met;
                 if( theMet_ -> size() != 1 )
                     std::cout << "WARNING number of MET is not equal to 1" << std::endl;
+                Met = theMet_->ptrAt( 0 );
                 MetPt_ = theMet_->ptrAt( 0 ) -> getCorPt();
                 MetPhi_ = theMet_->ptrAt( 0 ) -> phi();
 
@@ -1502,7 +1539,16 @@ namespace flashgg {
                     tthltags_obj.setLepE( lepE );
                     tthltags_obj.setLepEta( lepEta );
                     tthltags_obj.setLepPhi( lepPhi );
+                    tthltags_obj.setLepCharge( lepCharge );
                     tthltags_obj.setLepType( lepType );
+                    tthltags_obj.setMet( Met );
+
+                    tthltags_obj.setMaxBTagVal( maxBTagVal_ );
+                    tthltags_obj.setSecondMaxBTagVal( secondMaxBTagVal_ );
+                    tthltags_obj.setThirdMaxBTagVal( thirdMaxBTagVal_ );
+                    tthltags_obj.setFourthMaxBTagVal( fourthMaxBTagVal_ );
+                    tthltags_obj.setMaxBTagVal_noBB( maxBTagVal_noBB_ );
+                    tthltags_obj.setSecondMaxBTagVal_noBB( secondMaxBTagVal_noBB_ );
 
                     tthltags_obj.setLeadPrompt(-999);
                     tthltags_obj.setLeadMad(-999);
