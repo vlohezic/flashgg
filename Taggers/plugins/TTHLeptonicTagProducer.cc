@@ -1123,6 +1123,31 @@ namespace flashgg {
                         bDiscriminatorValue >= 0. ? bTags.push_back(bDiscriminatorValue) : bTags.push_back(-1.);
                         bDiscriminatorValue_noBB >= 0. ? bTags_noBB.push_back(bDiscriminatorValue_noBB) : bTags_noBB.push_back(-1.);
 
+                        if( bDiscriminatorValue > bDiscriminator_[0] ) njets_btagloose_++;
+                        if( bDiscriminatorValue > bDiscriminator_[1] ) njets_btagmedium_++;
+                        if( bDiscriminatorValue > bDiscriminator_[2] ) njets_btagtight_++;
+
+                        if( bDiscriminatorValue > bDiscriminator_[1] )
+                            tagBJets.push_back( thejet );
+                    
+                        if (useLargeMVAs) {
+                          float cvsl = thejet->bDiscriminator("pfDeepCSVJetTags:probc") + thejet->bDiscriminator("pfDeepCSVJetTags:probudsg") ;
+                          float cvsb = thejet->bDiscriminator("pfDeepCSVJetTags:probc") + thejet->bDiscriminator("pfDeepCSVJetTags:probb")+thejet->bDiscriminator("pfDeepCSVJetTags:probbb") ;
+                          float ptD = thejet->userFloat("ptD") ;
+                          float axis1 = thejet->userFloat("axis1") ;
+                          int mult = thejet->userFloat("totalMult") ;
+
+                          topTagger->addJet(thejet->pt(), thejet->eta(), thejet->phi(), thejet->mass(), bDiscriminatorValue, cvsl, cvsb, ptD, axis1, mult);
+                        }
+
+                        if(bDiscriminatorValue_noBB > maxBTagVal_noBB_){
+                            if(maxBTagVal_noBB_ > secondMaxBTagVal_noBB_) { secondMaxBTagVal_noBB_ = maxBTagVal_noBB_; }
+                            maxBTagVal_noBB_ = bDiscriminatorValue_noBB;
+                            
+                        } else if(bDiscriminatorValue_noBB > secondMaxBTagVal_noBB_){
+                            secondMaxBTagVal_noBB_ = bDiscriminatorValue_noBB;
+                        }
+
                         if(bDiscriminatorValue > maxBTagVal_){ 
                             
                             if(thirdMaxBTagVal_>fourthMaxBTagVal_) { fourthMaxBTagVal_= thirdMaxBTagVal_;}
@@ -1145,24 +1170,7 @@ namespace flashgg {
                         } else if(bDiscriminatorValue > fourthMaxBTagVal_){
                             fourthMaxBTagVal_ = bDiscriminatorValue;
                         }
-
-                        if( bDiscriminatorValue > bDiscriminator_[0] ) njets_btagloose_++;
-                        if( bDiscriminatorValue > bDiscriminator_[1] ) njets_btagmedium_++;
-                        if( bDiscriminatorValue > bDiscriminator_[2] ) njets_btagtight_++;
-
-                        if( bDiscriminatorValue > bDiscriminator_[1] )
-                            tagBJets.push_back( thejet );
-                    
-                        if (useLargeMVAs) {
-                          float cvsl = thejet->bDiscriminator("pfDeepCSVJetTags:probc") + thejet->bDiscriminator("pfDeepCSVJetTags:probudsg") ;
-                          float cvsb = thejet->bDiscriminator("pfDeepCSVJetTags:probc") + thejet->bDiscriminator("pfDeepCSVJetTags:probb")+thejet->bDiscriminator("pfDeepCSVJetTags:probbb") ;
-                          float ptD = thejet->userFloat("ptD") ;
-                          float axis1 = thejet->userFloat("axis1") ;
-                          int mult = thejet->userFloat("totalMult") ;
-
-                          topTagger->addJet(thejet->pt(), thejet->eta(), thejet->phi(), thejet->mass(), bDiscriminatorValue, cvsl, cvsb, ptD, axis1, mult);
-                        }
-
+                        
                     }
                      
                 }
@@ -1330,8 +1338,8 @@ namespace flashgg {
                 for (unsigned int i = 0; i < global_features.size(); i++)
                     global_features_ttH_vs_tH[i] = global_features[i];
 
-                double forward_jet_pt, forward_jet_eta;
-                calculate_forward_jet_features(forward_jet_pt, forward_jet_eta, tagJets, "pfDeepCSVJetTags:probb", maxBTagVal_noBB_);
+                double forward_jet_pt, forward_jet_eta, forward_jet_phi;
+                calculate_forward_jet_features(forward_jet_pt, forward_jet_eta, forward_jet_phi, tagJets, "pfDeepCSVJetTags:probb", maxBTagVal_noBB_);
   
                 double lep1_charge, lep2_charge;
                 calculate_lepton_charges(lep1_charge, lep2_charge, Muons, Electrons);
@@ -1543,6 +1551,13 @@ namespace flashgg {
                     tthltags_obj.setLepType( lepType );
                     tthltags_obj.setMet( Met );
 
+                    tthltags_obj.setNLepTight( lepton_nTight_ );
+                    tthltags_obj.setNBLoose( njets_btagloose_ );
+                    tthltags_obj.setNBMedium( njets_btagmedium_ );
+                    tthltags_obj.setNBTight( njets_btagtight_ );
+                    tthltags_obj.setFwdjetPt( forward_jet_pt );
+                    tthltags_obj.setFwdjetEta( forward_jet_eta );
+                    tthltags_obj.setFwdjetPhi( forward_jet_phi );
                     tthltags_obj.setMaxBTagVal( maxBTagVal_ );
                     tthltags_obj.setSecondMaxBTagVal( secondMaxBTagVal_ );
                     tthltags_obj.setThirdMaxBTagVal( thirdMaxBTagVal_ );
