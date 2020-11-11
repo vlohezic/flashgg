@@ -52,6 +52,8 @@ namespace flashgg {
         int subleadPassFrix() const { return sublead_passFrix_; }
         double subleadSmallestDr() const { return sublead_smallestDr_; }
 
+        float diPhoHelicity() const { return diPhoHelicity_; }
+
         int nLepTight() const { return nLepTight_; }
         int nBLoose() const { return nBLoose_; }
         int nBMedium() const { return nBMedium_; }
@@ -59,6 +61,7 @@ namespace flashgg {
         float fwdjetPt() const { return fwdjetPt_; }
         float fwdjetEta() const { return fwdjetEta_; }
         float fwdjetPhi() const { return fwdjetPhi_; }
+        float sumJetPt() const { return sumJetPt_; }
         float maxBTagVal() const { return maxBTagVal_; }
         float secondMaxBTagVal() const { return secondMaxBTagVal_; }
         float thirdMaxBTagVal() const { return thirdMaxBTagVal_; }
@@ -97,6 +100,8 @@ namespace flashgg {
         void setSubleadPassFrix(int sublead_passFrix) { sublead_passFrix_ = sublead_passFrix; }
         void setSubleadSmallestDr(double sublead_smallestDr) { sublead_smallestDr_ = sublead_smallestDr; }
 
+        void setDiPhoHelicity(float diPhoHelicity) { diPhoHelicity_ = diPhoHelicity; }
+
         void setNLepTight(float nLepTight) { nLepTight_ = nLepTight; }
         void setNBLoose(int nBLoose) { nBLoose_ = nBLoose; }
         void setNBMedium(int nBMedium) { nBMedium_ = nBMedium; }
@@ -104,6 +109,7 @@ namespace flashgg {
         void setFwdjetPt(float fwdjetPt) { fwdjetPt_ = fwdjetPt; }
         void setFwdjetEta(float fwdjetEta) { fwdjetEta_ = fwdjetEta; }
         void setFwdjetPhi(float fwdjetPhi) { fwdjetPhi_ = fwdjetPhi; }
+        void setSumJetPt(float sumJetPt) { sumJetPt_ = sumJetPt; }
         void setMaxBTagVal(float maxBTagVal) { maxBTagVal_ = maxBTagVal; }
         void setSecondMaxBTagVal(float secondMaxBTagVal) { secondMaxBTagVal_ = secondMaxBTagVal; }
         void setThirdMaxBTagVal(float thirdMaxBTagVal) { thirdMaxBTagVal_ = thirdMaxBTagVal; }
@@ -149,6 +155,8 @@ namespace flashgg {
         int sublead_passFrix_;
         double sublead_smallestDr_;
 
+        float diPhoHelicity_;
+
         int nLepTight_;
         int nBLoose_;
         int nBMedium_;
@@ -156,6 +164,7 @@ namespace flashgg {
         float fwdjetPt_;
         float fwdjetEta_;
         float fwdjetPhi_;
+        float sumJetPt_;
         float maxBTagVal_;
         float secondMaxBTagVal_;
         float thirdMaxBTagVal_;

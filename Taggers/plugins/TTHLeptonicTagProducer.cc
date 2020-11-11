@@ -1551,6 +1551,8 @@ namespace flashgg {
                     tthltags_obj.setLepType( lepType );
                     tthltags_obj.setMet( Met );
 
+                    tthltags_obj.setDiPhoHelicity( helicity_angle_ );
+
                     tthltags_obj.setNLepTight( lepton_nTight_ );
                     tthltags_obj.setNBLoose( njets_btagloose_ );
                     tthltags_obj.setNBMedium( njets_btagmedium_ );
@@ -1558,6 +1560,7 @@ namespace flashgg {
                     tthltags_obj.setFwdjetPt( forward_jet_pt );
                     tthltags_obj.setFwdjetEta( forward_jet_eta );
                     tthltags_obj.setFwdjetPhi( forward_jet_phi );
+                    tthltags_obj.setSumJetPt( ht_ );
                     tthltags_obj.setMaxBTagVal( maxBTagVal_ );
                     tthltags_obj.setSecondMaxBTagVal( secondMaxBTagVal_ );
                     tthltags_obj.setThirdMaxBTagVal( thirdMaxBTagVal_ );
