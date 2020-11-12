@@ -201,8 +201,11 @@ namespace flashgg {
 
         float ht_;
         float helicity_angle_;
-        float top_tag_score_;
+        double forward_jet_pt; 
+        double forward_jet_eta; 
+        double forward_jet_phi;
 
+        float top_tag_score_;
         float dnn_score_0_;
         float dnn_score_1_;
 
@@ -1182,13 +1185,12 @@ namespace flashgg {
                       dnn_score_ttGG = dnn_ttGG->EvaluateDNN();
                   }
 
-                  double forward_jet_pt, forward_jet_eta, forward_jet_phi;
-                  calculate_forward_jet_features(forward_jet_pt, forward_jet_eta, forward_jet_phi, JetVect, "pfDeepCSVJetTags:probb", maxBTagVal_noBB_);
-
                   TLorentzVector pho1, pho2;
                   pho1.SetPtEtaPhiE(dipho->leadingPhoton()->pt(), dipho->leadingPhoton()->eta(), dipho->leadingPhoton()->phi(), dipho->leadingPhoton()->energy());
                   pho2.SetPtEtaPhiE(dipho->subLeadingPhoton()->pt(), dipho->subLeadingPhoton()->eta(), dipho->subLeadingPhoton()->phi(), dipho->subLeadingPhoton()->energy());
                   helicity_angle_ = helicity(pho1, pho2);
+                  
+                  calculate_forward_jet_features(forward_jet_pt, forward_jet_eta, forward_jet_phi, JetVect, "pfDeepCSVJetTags:probb", maxBTagVal_noBB_);
 
                   top_tag_score_ = mvaEval.size() > 0 ? (mvaEval[0] != - 99 ? mvaEval[0] : -1) : - 1;
                   dnn_score_0_ = dnn_score_dipho;
@@ -1287,6 +1289,8 @@ namespace flashgg {
                     tthhtags_obj.setSecondMaxBTagVal( secondMaxBTagVal_ );
                     tthhtags_obj.setThirdMaxBTagVal( thirdMaxBTagVal_ );
                     tthhtags_obj.setFourthMaxBTagVal( fourthMaxBTagVal_ );
+                    tthhtags_obj.setMaxBTagVal_noBB( maxBTagVal_noBB_ );
+                    tthhtags_obj.setSecondMaxBTagVal_noBB( secondMaxBTagVal_noBB_ );
                     std::string syst_label = modifySystematicsWorkflow ? systematicsLabels[syst_idx] : systLabel_;
                     tthhtags_obj.setSystLabel( syst_label ); 
                     tthhtags_obj.setMVAres(tthMvaVal_);

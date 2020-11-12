@@ -38,6 +38,8 @@ namespace flashgg {
         float secondMaxBTagVal() const {return secondMaxBTagVal_;}
         float thirdMaxBTagVal() const {return thirdMaxBTagVal_;}
         float fourthMaxBTagVal() const {return fourthMaxBTagVal_;}
+        float maxBTagVal_noBB() const { return maxBTagVal_noBB_; }
+        float secondMaxBTagVal_noBB() const { return secondMaxBTagVal_noBB_; }
         float tthMvaRes() const {return tthMvaRes_;}
 
         void setDiPhoHelicity(float diPhoHelicity) { diPhoHelicity_ = diPhoHelicity; }
@@ -56,6 +58,8 @@ namespace flashgg {
         void setSecondMaxBTagVal( float dval ) { secondMaxBTagVal_ = dval;}
         void setThirdMaxBTagVal( float dval ) { thirdMaxBTagVal_ = dval;}
         void setFourthMaxBTagVal( float dval ) { fourthMaxBTagVal_ = dval;}
+        void setMaxBTagVal_noBB(float maxBTagVal_noBB) { maxBTagVal_noBB_ = maxBTagVal_noBB; }
+        void setSecondMaxBTagVal_noBB(float secondMaxBTagVal_noBB) { secondMaxBTagVal_noBB_ = secondMaxBTagVal_noBB; }
         void setJetBTagValVec( std::vector<float> vec ) { theJetBTagValVec_ = vec;}
         void setMVAres(float val) {tthMvaRes_ = val;}
         void setMET( edm::Ptr<flashgg::Met> MET ) {MET_ = MET;}
@@ -84,6 +88,8 @@ namespace flashgg {
         float secondMaxBTagVal_;
         float thirdMaxBTagVal_;
         float fourthMaxBTagVal_;
+        float maxBTagVal_noBB_;
+        float secondMaxBTagVal_noBB_;
         float tthMvaRes_;
         
 
