@@ -1182,6 +1182,8 @@ namespace flashgg {
                       dnn_score_ttGG = dnn_ttGG->EvaluateDNN();
                   }
 
+                  double forward_jet_pt, forward_jet_eta, forward_jet_phi;
+                  calculate_forward_jet_features(forward_jet_pt, forward_jet_eta, forward_jet_phi, JetVect, "pfDeepCSVJetTags:probb", maxBTagVal_noBB_);
 
                   TLorentzVector pho1, pho2;
                   pho1.SetPtEtaPhiE(dipho->leadingPhoton()->pt(), dipho->leadingPhoton()->eta(), dipho->leadingPhoton()->phi(), dipho->leadingPhoton()->energy());
@@ -1274,6 +1276,10 @@ namespace flashgg {
                     tthhtags_obj.setNBMedium( njets_btagmedium_ );
                     tthhtags_obj.setNBTight( njets_btagtight_ );
                     tthhtags_obj.setDiPhotonIndex( diphoIndex );
+                    tthhtags_obj.setDiPhoHelicity( helicity_angle_ );
+                    tthhtags_obj.setFwdjetPt( forward_jet_pt );
+                    tthhtags_obj.setFwdjetEta( forward_jet_eta );
+                    tthhtags_obj.setFwdjetPhi( forward_jet_phi );
                     tthhtags_obj.setLeadJetPt( leadJetPt_ );
                     tthhtags_obj.setSubLeadJetPt( subLeadJetPt_ );
                     tthhtags_obj.setSumJetPt( sumJetPt_ );
