@@ -5,6 +5,7 @@
 #include "flashgg/DataFormats/interface/Muon.h"
 #include "flashgg/DataFormats/interface/Electron.h"
 #include "flashgg/DataFormats/interface/Jet.h"
+#include "flashgg/DataFormats/interface/Met.h"
 
 namespace flashgg {
 
@@ -23,11 +24,13 @@ namespace flashgg {
         const std::vector<edm::Ptr<flashgg::Electron> > electrons() const {return Electrons_;}
         const std::vector<edm::Ptr<Jet> > jets() const { return Jets_;}
         const std::vector<edm::Ptr<Jet> > bJets() const { return BJets_;}
+        const edm::Ptr<flashgg::Met>  met() const { return Met_;}
 
         const std::vector<double>  leptonsPt() const { return lepPt_;}
         const std::vector<double>  leptonsE() const { return lepE_;}
         const std::vector<double>  leptonsPhi() const { return lepPhi_;}
         const std::vector<double>  leptonsEta() const { return lepEta_;}
+        const std::vector<double>  leptonsCharge() const { return lepCharge_;}
         const std::vector<int>  leptonsType() const { return lepType_;}
 
         int leadPrompt() const { return leadPrompt_; }
@@ -48,6 +51,23 @@ namespace flashgg {
         int subleadMomMomID() const { return sublead_motherMotherID_; }
         int subleadPassFrix() const { return sublead_passFrix_; }
         double subleadSmallestDr() const { return sublead_smallestDr_; }
+
+        float diPhoHelicity() const { return diPhoHelicity_; }
+
+        int nLepTight() const { return nLepTight_; }
+        int nBLoose() const { return nBLoose_; }
+        int nBMedium() const { return nBMedium_; }
+        int nBTight() const { return nBTight_; }
+        float fwdjetPt() const { return fwdjetPt_; }
+        float fwdjetEta() const { return fwdjetEta_; }
+        float fwdjetPhi() const { return fwdjetPhi_; }
+        float sumJetPt() const { return sumJetPt_; }
+        float maxBTagVal() const { return maxBTagVal_; }
+        float secondMaxBTagVal() const { return secondMaxBTagVal_; }
+        float thirdMaxBTagVal() const { return thirdMaxBTagVal_; }
+        float fourthMaxBTagVal() const { return fourthMaxBTagVal_; }
+        float maxBTagVal_noBB() const { return maxBTagVal_noBB_; }
+        float secondMaxBTagVal_noBB() const { return secondMaxBTagVal_noBB_; }
         
         void setJets( std::vector<edm::Ptr<Jet> > Jets ) { Jets_ = Jets; }
         void setBJets( std::vector<edm::Ptr<Jet> > BJets )  { BJets_ = BJets;}
@@ -57,7 +77,9 @@ namespace flashgg {
         void setLepE( std::vector<double> lepE ) { lepE_ = lepE; }
         void setLepEta( std::vector<double> lepEta ) { lepEta_ = lepEta; }
         void setLepPhi( std::vector<double> lepPhi ) { lepPhi_ = lepPhi; }
+        void setLepCharge( std::vector<double> lepCharge ) { lepCharge_ = lepCharge; }
         void setLepType( std::vector<int> lepType ) { lepType_ = lepType; }
+        void setMet( edm::Ptr<flashgg::Met> Met ) {Met_ = Met;}
 
         void setLeadPrompt(int leadPrompt) { leadPrompt_ = leadPrompt; }
         void setSubleadPrompt(int subleadPrompt) { subleadPrompt_ = subleadPrompt; }
@@ -78,6 +100,23 @@ namespace flashgg {
         void setSubleadPassFrix(int sublead_passFrix) { sublead_passFrix_ = sublead_passFrix; }
         void setSubleadSmallestDr(double sublead_smallestDr) { sublead_smallestDr_ = sublead_smallestDr; }
 
+        void setDiPhoHelicity(float diPhoHelicity) { diPhoHelicity_ = diPhoHelicity; }
+
+        void setNLepTight(float nLepTight) { nLepTight_ = nLepTight; }
+        void setNBLoose(int nBLoose) { nBLoose_ = nBLoose; }
+        void setNBMedium(int nBMedium) { nBMedium_ = nBMedium; }
+        void setNBTight(int nBTight) { nBTight_ = nBTight; }
+        void setFwdjetPt(float fwdjetPt) { fwdjetPt_ = fwdjetPt; }
+        void setFwdjetEta(float fwdjetEta) { fwdjetEta_ = fwdjetEta; }
+        void setFwdjetPhi(float fwdjetPhi) { fwdjetPhi_ = fwdjetPhi; }
+        void setSumJetPt(float sumJetPt) { sumJetPt_ = sumJetPt; }
+        void setMaxBTagVal(float maxBTagVal) { maxBTagVal_ = maxBTagVal; }
+        void setSecondMaxBTagVal(float secondMaxBTagVal) { secondMaxBTagVal_ = secondMaxBTagVal; }
+        void setThirdMaxBTagVal(float thirdMaxBTagVal) { thirdMaxBTagVal_ = thirdMaxBTagVal; }
+        void setFourthMaxBTagVal(float fourthMaxBTagVal) { fourthMaxBTagVal_ = fourthMaxBTagVal; }
+        void setMaxBTagVal_noBB(float maxBTagVal_noBB) { maxBTagVal_noBB_ = maxBTagVal_noBB; }
+        void setSecondMaxBTagVal_noBB(float secondMaxBTagVal_noBB) { secondMaxBTagVal_noBB_ = secondMaxBTagVal_noBB; }
+
         DiPhotonTagBase::tag_t tagEnum() const override {return DiPhotonTagBase::kTTHLeptonic; }
 
         void setMvaRes(float mvaRes) {mvaRes_ = mvaRes;}
@@ -88,11 +127,13 @@ namespace flashgg {
         std::vector<edm::Ptr<Electron> > Electrons_;
         std::vector<edm::Ptr<Jet> > Jets_;
         std::vector<edm::Ptr<Jet> > BJets_;
+        edm::Ptr<flashgg::Met> Met_;
 
         std::vector<double> lepPt_;
         std::vector<double> lepE_;
         std::vector<double> lepEta_;
         std::vector<double> lepPhi_;
+        std::vector<double> lepCharge_;
         std::vector<int>    lepType_;
 
         int leadPrompt_;
@@ -113,6 +154,24 @@ namespace flashgg {
         int sublead_motherMotherID_;
         int sublead_passFrix_;
         double sublead_smallestDr_;
+
+        float diPhoHelicity_;
+
+        int nLepTight_;
+        int nBLoose_;
+        int nBMedium_;
+        int nBTight_;
+        float fwdjetPt_;
+        float fwdjetEta_;
+        float fwdjetPhi_;
+        float sumJetPt_;
+        float maxBTagVal_;
+        float secondMaxBTagVal_;
+        float thirdMaxBTagVal_;
+        float fourthMaxBTagVal_;
+        float maxBTagVal_noBB_;
+        float secondMaxBTagVal_noBB_;
+
         float mvaRes_;
     };
 }

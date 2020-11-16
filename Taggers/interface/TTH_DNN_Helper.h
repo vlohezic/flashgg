@@ -337,9 +337,10 @@ double helicity(const TLorentzVector particle_1, const TLorentzVector particle_2
 }
 
 inline
-void calculate_forward_jet_features(double &forward_jet_pt, double &forward_jet_eta, std::vector<edm::Ptr<flashgg::Jet>> jets, std::string btag_selector, double max1_btag) {
-    forward_jet_pt = -1;
+void calculate_forward_jet_features(double &forward_jet_pt, double &forward_jet_eta, double &forward_jet_phi, std::vector<edm::Ptr<flashgg::Jet>> jets, std::string btag_selector, double max1_btag) {
+    forward_jet_pt = -1.;
     forward_jet_eta = 0.0;
+    forward_jet_phi = 0.0;
 
     for (unsigned int i = 0; i < jets.size(); i++) {
         if (jets[i]->bDiscriminator(btag_selector) >= max1_btag && jets.size() > 1)
@@ -347,7 +348,8 @@ void calculate_forward_jet_features(double &forward_jet_pt, double &forward_jet_
 
         if (abs(jets[i]->eta()) > forward_jet_eta) {
             forward_jet_pt = log(jets[i]->pt());
-            forward_jet_eta = abs(jets[i]->eta());            
+            forward_jet_eta = abs(jets[i]->eta());  
+            forward_jet_phi = abs(jets[i]->phi());
         }        
     }
 

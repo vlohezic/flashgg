@@ -166,6 +166,10 @@ namespace flashgg {
         float subleadPSV_;
         float nJets_;
         float nJets_bTagMedium_;
+        float maxBTagVal_;
+        float secondMaxBTagVal_;
+        float thirdMaxBTagVal_;
+        float fourthMaxBTagVal_;
         float jet_pt1_;
         float jet_pt2_;
         float jet_pt3_;
@@ -841,6 +845,11 @@ namespace flashgg {
      
                 if( idmva1 < PhoMVAThreshold_ || idmva2 < PhoMVAThreshold_ ) { continue; }
 
+                maxBTagVal_ = -3.;
+                secondMaxBTagVal_ = -3.;
+                thirdMaxBTagVal_ = -3.;
+                fourthMaxBTagVal_ = -3.;
+                
                 ht_ = 0.;
                 btag_1_=-999;
                 btag_noBB_1_ = -999;
@@ -889,6 +898,7 @@ namespace flashgg {
                 std::vector<double> lepEta;
                 std::vector<double> lepPhi;
                 std::vector<double> lepE;
+                std::vector<double> lepCharge;
                 std::vector<int>    lepType;
 
                 if(theMuons->size()>0) {
@@ -1026,12 +1036,14 @@ namespace flashgg {
                         lepEta.push_back(Muons[n]->eta());
                         lepPhi.push_back(Muons[n]->phi());
                         lepE.push_back(Muons[n]->energy());
+                        lepCharge.push_back(Muons[n]->charge());
                         
                     }else if(type==2){
                         if(debug_) cout<<"ELEC LEPPTCHECK "<<   sorter[i].second<<" "<<Electrons[n]->pt()<< endl;
                         lepEta.push_back(Electrons[n]->eta());
                         lepPhi.push_back(Electrons[n]->phi());
                         lepE.push_back(Electrons[n]->energy());
+                        lepCharge.push_back(Electrons[n]->charge());
                     }                
                 }
                 
@@ -1128,6 +1140,37 @@ namespace flashgg {
                           topTagger->addJet(thejet->pt(), thejet->eta(), thejet->phi(), thejet->mass(), bDiscriminatorValue, cvsl, cvsb, ptD, axis1, mult);
                         }
 
+                        if(bDiscriminatorValue_noBB > maxBTagVal_noBB_){
+                            if(maxBTagVal_noBB_ > secondMaxBTagVal_noBB_) { secondMaxBTagVal_noBB_ = maxBTagVal_noBB_; }
+                            maxBTagVal_noBB_ = bDiscriminatorValue_noBB;
+                            
+                        } else if(bDiscriminatorValue_noBB > secondMaxBTagVal_noBB_){
+                            secondMaxBTagVal_noBB_ = bDiscriminatorValue_noBB;
+                        }
+
+                        if(bDiscriminatorValue > maxBTagVal_){ 
+                            
+                            if(thirdMaxBTagVal_>fourthMaxBTagVal_) { fourthMaxBTagVal_= thirdMaxBTagVal_;}
+                            if(secondMaxBTagVal_>thirdMaxBTagVal_){ thirdMaxBTagVal_= secondMaxBTagVal_; }
+                            if(maxBTagVal_ > secondMaxBTagVal_) { secondMaxBTagVal_ = maxBTagVal_; }
+                            
+                            maxBTagVal_ = bDiscriminatorValue;
+                            
+                        } else if(bDiscriminatorValue > secondMaxBTagVal_){
+                            
+                            if(thirdMaxBTagVal_>fourthMaxBTagVal_) { fourthMaxBTagVal_= thirdMaxBTagVal_;}
+                            if(secondMaxBTagVal_>thirdMaxBTagVal_) { thirdMaxBTagVal_= secondMaxBTagVal_;}
+                            secondMaxBTagVal_ = bDiscriminatorValue;
+                            
+                        } else if(bDiscriminatorValue > thirdMaxBTagVal_){
+                            
+                            if(thirdMaxBTagVal_>fourthMaxBTagVal_) { fourthMaxBTagVal_= thirdMaxBTagVal_;}
+                            thirdMaxBTagVal_ = bDiscriminatorValue;
+                            
+                        } else if(bDiscriminatorValue > fourthMaxBTagVal_){
+                            fourthMaxBTagVal_ = bDiscriminatorValue;
+                        }
+                        
                     }
                      
                 }
@@ -1255,8 +1298,10 @@ namespace flashgg {
                     bTag2_ = bTags[1];
                 }
 
+                edm::Ptr<flashgg::Met> Met;
                 if( theMet_ -> size() != 1 )
                     std::cout << "WARNING number of MET is not equal to 1" << std::endl;
+                Met = theMet_->ptrAt( 0 );
                 MetPt_ = theMet_->ptrAt( 0 ) -> getCorPt();
                 MetPhi_ = theMet_->ptrAt( 0 ) -> phi();
 
@@ -1293,8 +1338,8 @@ namespace flashgg {
                 for (unsigned int i = 0; i < global_features.size(); i++)
                     global_features_ttH_vs_tH[i] = global_features[i];
 
-                double forward_jet_pt, forward_jet_eta;
-                calculate_forward_jet_features(forward_jet_pt, forward_jet_eta, tagJets, "pfDeepCSVJetTags:probb", maxBTagVal_noBB_);
+                double forward_jet_pt, forward_jet_eta, forward_jet_phi;
+                calculate_forward_jet_features(forward_jet_pt, forward_jet_eta, forward_jet_phi, tagJets, "pfDeepCSVJetTags:probb", maxBTagVal_noBB_);
   
                 double lep1_charge, lep2_charge;
                 calculate_lepton_charges(lep1_charge, lep2_charge, Muons, Electrons);
@@ -1502,7 +1547,26 @@ namespace flashgg {
                     tthltags_obj.setLepE( lepE );
                     tthltags_obj.setLepEta( lepEta );
                     tthltags_obj.setLepPhi( lepPhi );
+                    tthltags_obj.setLepCharge( lepCharge );
                     tthltags_obj.setLepType( lepType );
+                    tthltags_obj.setMet( Met );
+
+                    tthltags_obj.setDiPhoHelicity( helicity_angle_ );
+
+                    tthltags_obj.setNLepTight( lepton_nTight_ );
+                    tthltags_obj.setNBLoose( njets_btagloose_ );
+                    tthltags_obj.setNBMedium( njets_btagmedium_ );
+                    tthltags_obj.setNBTight( njets_btagtight_ );
+                    tthltags_obj.setFwdjetPt( forward_jet_pt );
+                    tthltags_obj.setFwdjetEta( forward_jet_eta );
+                    tthltags_obj.setFwdjetPhi( forward_jet_phi );
+                    tthltags_obj.setSumJetPt( ht_ );
+                    tthltags_obj.setMaxBTagVal( maxBTagVal_ );
+                    tthltags_obj.setSecondMaxBTagVal( secondMaxBTagVal_ );
+                    tthltags_obj.setThirdMaxBTagVal( thirdMaxBTagVal_ );
+                    tthltags_obj.setFourthMaxBTagVal( fourthMaxBTagVal_ );
+                    tthltags_obj.setMaxBTagVal_noBB( maxBTagVal_noBB_ );
+                    tthltags_obj.setSecondMaxBTagVal_noBB( secondMaxBTagVal_noBB_ );
 
                     tthltags_obj.setLeadPrompt(-999);
                     tthltags_obj.setLeadMad(-999);
