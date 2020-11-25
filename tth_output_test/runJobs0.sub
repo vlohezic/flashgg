@@ -1,0 +1,17 @@
++JobFlavour   = "espresso"
+
++OnExitHold   = ExitStatus != 0 
+
+periodic_release =  (NumJobStarts < 4) && ((CurrentTime - EnteredCurrentStatus) > 60) 
+
+getenv        = True 
+input         = /afs/cern.ch/user/v/vlohezic/.dasmaps/das_maps_dbs_prod.js 
+executable    = tth_output/runJobs0.sh
+arguments     = $(ProcId)
+output        = tth_output/runJobs0_$(ClusterId).$(ProcId).out
+error         = tth_output/runJobs0_$(ClusterId).$(ProcId).err
+log           = tth_output/runJobs0_$(ClusterId).$(ProcId)_htc.log
+
+RequestCpus   = 1
+max_retries   = 2
+queue 1 

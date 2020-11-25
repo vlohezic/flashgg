@@ -167,7 +167,7 @@ customize.options.register('dumpTrees',
                            'dumpTrees'
                            )
 customize.options.register('dumpWorkspace',
-                           False,
+                           True,
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.bool,
                            'dumpWorkspace'
