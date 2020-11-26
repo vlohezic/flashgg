@@ -20,11 +20,11 @@ namespace flashgg {
 
         TTHLeptonicTag *clone() const override { return ( new TTHLeptonicTag( *this ) ); }
 
-        const std::vector<edm::Ptr<Muon> > muons() const { return Muons_;}
-        const std::vector<edm::Ptr<flashgg::Electron> > electrons() const {return Electrons_;}
-        const std::vector<edm::Ptr<Jet> > jets() const { return Jets_;}
-        const std::vector<edm::Ptr<Jet> > bJets() const { return BJets_;}
-        const edm::Ptr<flashgg::Met>  met() const { return Met_;}
+        const std::vector<edm::Ptr<Muon> > muons() const { return Muons_; }
+        const std::vector<edm::Ptr<flashgg::Electron> > electrons() const { return Electrons_; }
+        const std::vector<edm::Ptr<Jet> > jets() const { return Jets_; }
+        const std::vector<edm::Ptr<Jet> > bJets() const { return BJets_; }
+        const edm::Ptr<flashgg::Met>  met() const { return Met_; }
 
         const std::vector<double>  leptonsPt() const { return lepPt_;}
         const std::vector<double>  leptonsE() const { return lepE_;}
@@ -68,11 +68,18 @@ namespace flashgg {
         float fourthMaxBTagVal() const { return fourthMaxBTagVal_; }
         float maxBTagVal_noBB() const { return maxBTagVal_noBB_; }
         float secondMaxBTagVal_noBB() const { return secondMaxBTagVal_noBB_; }
+
+        const std::vector<float> topTagger() const { return topTagger_; }
+        float diPhoBDT() const { return diPhoBDT_; }
+        float tthVSttggDNN() const { return tthVSttggDNN_; }
+        float tthVSthDNN() const { return tthVSttggDNN_; }
+        float tthBDT() const { return tthBDT_; }        
+    
         
         void setJets( std::vector<edm::Ptr<Jet> > Jets ) { Jets_ = Jets; }
-        void setBJets( std::vector<edm::Ptr<Jet> > BJets )  { BJets_ = BJets;}
-        void setMuons( std::vector<edm::Ptr<Muon> > Muons ) {Muons_ = Muons;}
-        void setElectrons( std::vector<edm::Ptr<Electron> > Electrons ) {Electrons_ = Electrons;}
+        void setBJets( std::vector<edm::Ptr<Jet> > BJets )  { BJets_ = BJets; }
+        void setMuons( std::vector<edm::Ptr<Muon> > Muons ) { Muons_ = Muons; }
+        void setElectrons( std::vector<edm::Ptr<Electron> > Electrons ) { Electrons_ = Electrons; }
         void setLepPt( std::vector<double> lepPt ) { lepPt_ = lepPt; }
         void setLepE( std::vector<double> lepE ) { lepE_ = lepE; }
         void setLepEta( std::vector<double> lepEta ) { lepEta_ = lepEta; }
@@ -117,10 +124,13 @@ namespace flashgg {
         void setMaxBTagVal_noBB(float maxBTagVal_noBB) { maxBTagVal_noBB_ = maxBTagVal_noBB; }
         void setSecondMaxBTagVal_noBB(float secondMaxBTagVal_noBB) { secondMaxBTagVal_noBB_ = secondMaxBTagVal_noBB; }
 
-        DiPhotonTagBase::tag_t tagEnum() const override {return DiPhotonTagBase::kTTHLeptonic; }
+        void setTopTagger(std::vector<float> topTagger) { topTagger_ = topTagger; }
+        void setDiPhoBDT(float diPhoBDT) { diPhoBDT_ = diPhoBDT; }
+        void setTthVSttggDNN(float tthVSttggDNN) { tthVSttggDNN_ = tthVSttggDNN; }
+        void setTthVSthDNN(float tthVSthDNN) { tthVSthDNN_ = tthVSthDNN; }
+        void setTthBDT(float tthBDT) { tthBDT_ = tthBDT; }
 
-        void setMvaRes(float mvaRes) {mvaRes_ = mvaRes;}
-        float mvaRes() const {return mvaRes_;}
+        DiPhotonTagBase::tag_t tagEnum() const override {return DiPhotonTagBase::kTTHLeptonic; }
 
         private:
         std::vector<edm::Ptr<Muon> > Muons_;
@@ -172,7 +182,11 @@ namespace flashgg {
         float maxBTagVal_noBB_;
         float secondMaxBTagVal_noBB_;
 
-        float mvaRes_;
+        std::vector<float> topTagger_;
+        float diPhoBDT_;
+        float tthVSttggDNN_;
+        float tthVSthDNN_;
+        float tthBDT_;
     };
 }
 
