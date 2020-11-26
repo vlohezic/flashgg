@@ -1005,7 +1005,7 @@ namespace flashgg {
                     if( bDiscriminatorValue > bDiscriminator_[2] ) njets_btagtight_++;
                 }
 
-                vector<float> mvaEval; 
+                vector<float> mvaEval;
                 if (useLargeMVAs) {
                     mvaEval = topTagger->EvalMVA();
                     topTagger->clear();
@@ -1293,8 +1293,12 @@ namespace flashgg {
                     tthhtags_obj.setSecondMaxBTagVal_noBB( secondMaxBTagVal_noBB_ );
                     std::string syst_label = modifySystematicsWorkflow ? systematicsLabels[syst_idx] : systLabel_;
                     tthhtags_obj.setSystLabel( syst_label ); 
-                    tthhtags_obj.setMVAres(tthMvaVal_);
                     tthhtags_obj.setMET( theMET );
+
+                    tthhtags_obj.setTopTagger(mvaEval);
+                    tthhtags_obj.setTthVSdiPhoDNN(dnn_score_0_);
+                    tthhtags_obj.setTthVSttggDNN(dnn_score_1_);
+                    tthhtags_obj.setTthBDT(tthMvaVal_);
 
                     int chosenTag = computeStage1Kinematics( tthhtags_obj );
                     tthhtags_obj.setStage1recoTag( chosenTag );

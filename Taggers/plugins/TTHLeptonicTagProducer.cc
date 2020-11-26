@@ -1357,7 +1357,7 @@ namespace flashgg {
                     ttH_vs_tH_dnn_score = dnn_ttH_vs_tH->EvaluateDNN();
                 }
 
-                vector<float> mvaEval; 
+                vector<float> mvaEval;
                 if (useLargeMVAs) {
                     mvaEval = topTagger->EvalMVA();
                     topTagger->clear();
@@ -1402,6 +1402,7 @@ namespace flashgg {
                 }
 
                 float mvaValue = DiphotonMva_-> EvaluateMVA( "BDT" );
+                float diPhoMvaValue = mvaValue;
 
                 tthMvaVal_RunII_ = convert_tmva_to_prob(TThMva_RunII_->EvaluateMVA( "BDT" ));
                 if (debug_) {
@@ -1537,12 +1538,12 @@ namespace flashgg {
 
                     tthltags_obj.includeWeights( *dipho );
                     tthltags_obj.setJets( tagJets );
+                    tthltags_obj.setBJets( tagBJets );
                     tthltags_obj.setMuons( Muons );
                     tthltags_obj.setElectrons( Electrons );
                     tthltags_obj.setDiPhotonIndex( diphoIndex );
                     std::string syst_label = modifySystematicsWorkflow ? systematicsLabels[syst_idx] : systLabel_;
                     tthltags_obj.setSystLabel( syst_label );
-                    tthltags_obj.setMvaRes(mvaValue);
                     tthltags_obj.setLepPt( lepPt );
                     tthltags_obj.setLepE( lepE );
                     tthltags_obj.setLepEta( lepEta );
@@ -1567,6 +1568,12 @@ namespace flashgg {
                     tthltags_obj.setFourthMaxBTagVal( fourthMaxBTagVal_ );
                     tthltags_obj.setMaxBTagVal_noBB( maxBTagVal_noBB_ );
                     tthltags_obj.setSecondMaxBTagVal_noBB( secondMaxBTagVal_noBB_ );
+
+                    tthltags_obj.setTopTagger( mvaEval );
+                    tthltags_obj.setDiPhoBDT(diPhoMvaValue);
+                    tthltags_obj.setTthVSttggDNN(dnn_score_0_);
+                    tthltags_obj.setTthVSthDNN(ttH_vs_tH_dnn_score);
+                    tthltags_obj.setTthBDT(mvaValue);
 
                     tthltags_obj.setLeadPrompt(-999);
                     tthltags_obj.setLeadMad(-999);

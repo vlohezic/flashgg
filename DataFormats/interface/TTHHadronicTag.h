@@ -40,7 +40,11 @@ namespace flashgg {
         float fourthMaxBTagVal() const {return fourthMaxBTagVal_;}
         float maxBTagVal_noBB() const { return maxBTagVal_noBB_; }
         float secondMaxBTagVal_noBB() const { return secondMaxBTagVal_noBB_; }
-        float tthMvaRes() const {return tthMvaRes_;}
+
+        std::vector<float> topTagger() const { return topTagger_; }
+        float tthVSdiPhoDNN() const {return tthVSdiPhoDNN_;}
+        float tthVSttggDNN() const {return tthVSttggDNN_;}
+        float tthBDT() const {return tthBDT_;}
 
         void setDiPhoHelicity(float diPhoHelicity) { diPhoHelicity_ = diPhoHelicity; }
 
@@ -61,8 +65,12 @@ namespace flashgg {
         void setMaxBTagVal_noBB(float maxBTagVal_noBB) { maxBTagVal_noBB_ = maxBTagVal_noBB; }
         void setSecondMaxBTagVal_noBB(float secondMaxBTagVal_noBB) { secondMaxBTagVal_noBB_ = secondMaxBTagVal_noBB; }
         void setJetBTagValVec( std::vector<float> vec ) { theJetBTagValVec_ = vec;}
-        void setMVAres(float val) {tthMvaRes_ = val;}
         void setMET( edm::Ptr<flashgg::Met> MET ) {MET_ = MET;}
+
+        void setTopTagger( std::vector<float> topTagger )  { topTagger_ = topTagger; }
+        void setTthVSdiPhoDNN(float tthVSdiPhoDNN) {tthVSdiPhoDNN_ = tthVSdiPhoDNN;}
+        void setTthVSttggDNN(float tthVSttggDNN) {tthVSttggDNN_ = tthVSttggDNN;}
+        void setTthBDT(float tthBDT) {tthBDT_ = tthBDT;}
 
         DiPhotonTagBase::tag_t tagEnum() const override {return DiPhotonTagBase::kTTHHadronic; }
 
@@ -90,7 +98,11 @@ namespace flashgg {
         float fourthMaxBTagVal_;
         float maxBTagVal_noBB_;
         float secondMaxBTagVal_noBB_;
-        float tthMvaRes_;
+
+        std::vector<float> topTagger_;
+        float tthVSdiPhoDNN_;
+        float tthVSttggDNN_;
+        float tthBDT_;
         
 
     };
