@@ -268,7 +268,7 @@ if customize.dumpTrees:
     process.flashggTagSequence.remove(process.flashggZHLeptonicTag)
     process.flashggTagSequence.remove(process.flashggVHHadronicTag)
     process.flashggTagSequence.remove(process.flashggTTHDiLeptonTag)
-    #process.flashggTagSequence.remove(process.flashggTHQLeptonicTag)
+    process.flashggTagSequence.remove(process.flashggTHQLeptonicTag)
     process.flashggTTHHadronicTag.PhoMVAThreshold = cms.double(-0.9)
     process.flashggTTHHadronicTag.leadPhoOverMassTTHHMVAThreshold = cms.double(0.33333)
     process.flashggTTHHadronicTag.MVATTHHMVAThreshold = cms.double(-1.0)  
